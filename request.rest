@@ -3,11 +3,11 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "John@gmail.com",
+    "name": "Ajik",
+    "email": "Ajik@gmail.com",
     "password": "123456",
     "confPassword": "123456",
-    "role": "user"
+    "role": "admin"
 }
 
 ###
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 // Delete User
-DELETE http://localhost:5000/users/a3fd3e63-3753-4f59-b1b3-d879e22128b7
+DELETE http://localhost:5000/users/cd2a7b48-a8ec-457e-a16b-9784b3823689
 
 ###
 // Login User
@@ -41,6 +41,122 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
+    "email": "ardivan@gmail.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "Ajik@gmail.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
     "email": "John@gmail.com",
     "password": "123456"
+}
+
+###
+// Get Me
+GET http://localhost:5000/me
+
+###
+// LogOut User
+DELETE http://localhost:5000/logout
+
+
+###
+// Get All Message
+GET http://localhost:5000/chats
+
+
+// Send Message
+###
+POST http://localhost:5000/chats
+Content-Type: application/json
+
+{
+  "sender": "ardivan",
+  "receiver": "John Doe",
+  "message": "Hello, how can I assist you?"
+}
+
+
+###
+// Create Repair Shop
+POST http://localhost:5000/repairshops
+Content-Type: application/json
+
+{
+  "name": "Repair Shop 2",
+  "email": "ardivan@gmail.com",
+  "password": "123456",
+  "address": "Jakarta Selatan",
+  "phone_number": "081123456789",
+  "latitude": 123.456,
+  "longitude": 789.012,
+  "userId": 6
+}
+
+
+###
+// Get repairshop
+GET http://localhost:5000/repairshops
+
+
+###
+// Get repairshop by Id
+GET http://localhost:5000/repairshops/1
+
+
+###
+// Update repairshop
+PATCH http://localhost:5000/repairshops/1
+Content-Type: application/json
+
+{
+  "name": "Nama Repair Shop Baru"
+}
+
+
+###
+// Delete repairshop
+DELETE http://localhost:5000/repairshops/1
+
+
+###
+// Create Operational Schedule
+POST http://localhost:5000/operationalschedules
+Content-Type: application/json
+
+{
+  "repairShopId": 2,
+  "day": "Monday",
+  "openingTime": "09:00:00",
+  "closingTime": "18:00:00",
+  "status": "open"
+}
+
+
+###
+GET http://localhost:5000/operationalschedules/2
+
+
+###
+PATCH  http://localhost:5000/operationalschedules/2
+Content-Type: application/json
+
+{
+  "repairShopId": 2,
+  "day": "Monday",
+  "openingTime": "10:00:00",
+  "closingTime": "19:00:00",
+  "status": "open"
 }
