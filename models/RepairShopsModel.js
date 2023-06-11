@@ -65,9 +65,12 @@ const RepairShop = db.define(
   }
 );
 
-Users.hasMany(RepairShop);
+Users.hasMany(RepairShop, {
+  foreignKey: "userId",
+});
 RepairShop.belongsTo(Users, {
   foreignKey: "userId",
 });
+
 
 export default RepairShop;
