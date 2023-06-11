@@ -19,7 +19,7 @@ GET http://localhost:5000/users
 GET http://localhost:5000/users/afe4e77a-5c75-4257-b8f7-871367cb283f
 
 ###
-// Update Users
+// Updating a Users
 PATCH http://localhost:5000/users/a3fd3e63-3753-4f59-b1b3-d879e22128b7
 Content-Type: application/json
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 DELETE http://localhost:5000/users/cd2a7b48-a8ec-457e-a16b-9784b3823689
 
 ###
-// Login User
+// Logging in a User
 POST http://localhost:5000/login
 Content-Type: application/json
 
@@ -113,12 +113,12 @@ GET http://localhost:5000/repairshops
 
 ###
 // Get repairshop by Id
-GET http://localhost:5000/repairshops/1
+GET http://localhost:5000/repairshops/
 
 
 ###
 // Update repairshop
-PATCH http://localhost:5000/repairshops/1
+PATCH http://localhost:5000/repairshops/
 Content-Type: application/json
 
 {
@@ -128,7 +128,7 @@ Content-Type: application/json
 
 ###
 // Delete repairshop
-DELETE http://localhost:5000/repairshops/1
+DELETE http://localhost:5000/repairshops/
 
 
 ###

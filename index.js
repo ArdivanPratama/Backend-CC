@@ -19,10 +19,10 @@ const store = new sessionStore({
   db: db,
 });
 
-// Database Sync
-// (async () => {
-//   await db.sync();
-// })();
+//Database Sync
+ //(async () => {
+   //await db.sync();
+ //})();
 
 app.use(
   session({
