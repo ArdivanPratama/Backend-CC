@@ -21,21 +21,6 @@ const RepairShop = db.define(
         len: [3, 100],
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
     address: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -59,6 +44,13 @@ const RepairShop = db.define(
         notEmpty: true,
       },
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: true,
+      },
+    },
   },
   {
     freezeTableName: true,
@@ -71,6 +63,5 @@ Users.hasMany(RepairShop, {
 RepairShop.belongsTo(Users, {
   foreignKey: "userId",
 });
-
 
 export default RepairShop;
