@@ -9,6 +9,7 @@ import AuthRoute from "./routes/AuthRoute.js";
 import ChatRoute from "./routes/ChatRoute.js";
 import RepairShopsRoute from "./routes/RepairShopsRoute.js";
 import OperationalScheduleRoute from "./routes/OperationalScheduleRoute.js";
+import ChatChannelRoute from "./routes/ChatChannelRoute.js";
 dotenv.config();
 
 const app = express();
@@ -20,9 +21,9 @@ const store = new sessionStore({
 });
 
 //Database Sync
- //(async () => {
-   //await db.sync();
- //})();
+// (async () => {
+//   await db.sync();
+// })();
 
 app.use(
   session({
@@ -48,6 +49,7 @@ app.use(AuthRoute);
 app.use(ChatRoute);
 app.use(RepairShopsRoute);
 app.use(OperationalScheduleRoute);
+app.use(ChatChannelRoute);
 
 // store.sync();
 
