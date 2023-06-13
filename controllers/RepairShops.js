@@ -13,7 +13,7 @@ const storage = new Storage({
 // Create a GCS bucket reference
 const bucket = storage.bucket("image_bucket_befine");
 
-// Inisialisasi multer dengan storage GCS
+// Initialize multer with GCS storage
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
@@ -21,33 +21,33 @@ const upload = multer({
   },
 });
 
-// Membuat repair shop baru dengan upload gambar (hanya role admin)
+// Create a new repair shop with image upload (only for admin role)
 export const createRepairShop = async (req, res) => {
   try {
-    // Memeriksa peran (role) pengguna
+    // Check user's role
     if (req.role !== "admin") {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
-    // Upload gambar ke GCS
+    // Upload image to GCS
     upload.single("image")(req, res, async (error) => {
       if (error instanceof multer.MulterError) {
-        // Error saat proses upload gambar
+        // Error during image upload
         return res.status(500).json({ error: "Failed to upload image" });
       } else if (error) {
-        // Error lainnya
+        // Other errors
         return res.status(500).json({ error: "Something went wrong" });
       }
 
-      // Dapatkan file gambar yang diupload dari buffer
+      // Get the uploaded image file from the buffer
       const imageFile = req.file;
 
-      // Buat nama file yang unik
+      // Generate a unique file name
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
       const extension = path.extname(imageFile.originalname);
       const fileName = `image-${uniqueSuffix}${extension}`;
 
-      // Simpan file gambar ke GCS
+      // Save the image file to GCS
       const file = bucket.file(fileName);
       const stream = file.createWriteStream({
         resumable: false,
@@ -58,10 +58,11 @@ export const createRepairShop = async (req, res) => {
       });
       stream.on("finish", async () => {
         try {
-          // Buat repair shop baru dengan data dan path gambar
+          // Create a new repair shop with the data and image path
           const repairShop = await RepairShop.create({
             ...req.body,
             image: fileName,
+            userId: req.userId, // Assign the logged-in user ID to the repair shop
           });
 
           res.status(201).json(repairShop);
@@ -78,7 +79,7 @@ export const createRepairShop = async (req, res) => {
   }
 };
 
-// Mendapatkan semua repair shop
+// Get all repair shops
 export const getRepairShops = async (req, res) => {
   try {
     let response;
@@ -108,7 +109,7 @@ export const getRepairShops = async (req, res) => {
   }
 };
 
-// Mendapatkan repair shop berdasarkan ID
+// Get repair shop by ID
 export const getRepairShopById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -123,10 +124,10 @@ export const getRepairShopById = async (req, res) => {
   }
 };
 
-// Mengupdate repair shop (hanya role admin)
+// Update repair shop (only for admin role)
 export const updateRepairShop = async (req, res) => {
   try {
-    // Memeriksa peran (role) pengguna
+    // Check user's role
     if (req.role !== "admin") {
       return res.status(403).json({ error: "Unauthorized" });
     }
@@ -136,27 +137,27 @@ export const updateRepairShop = async (req, res) => {
       return res.status(404).json({ error: "Repair shop not found" });
     }
 
-    // Upload gambar ke GCS
+    // Upload image to GCS
     upload.single("image")(req, res, async (error) => {
       if (error instanceof multer.MulterError) {
-        // Error saat proses upload gambar
+        // Error during image upload
         return res.status(500).json({ error: "Failed to upload image" });
       } else if (error) {
-        // Error lainnya
+        // Other errors
         return res.status(500).json({ error: "Something went wrong" });
       }
 
-      // Dapatkan file gambar yang diupload dari buffer
+      // Get the uploaded image file from the buffer
       const imageFile = req.file;
 
-      // Jika ada gambar yang diupload, simpan ke GCS
+      // If an image is uploaded, save it to GCS
       if (imageFile) {
-        // Buat nama file yang unik
+        // Generate a unique file name
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
         const extension = path.extname(imageFile.originalname);
         const fileName = `image-${uniqueSuffix}${extension}`;
 
-        // Simpan file gambar ke GCS
+        // Save the image file to GCS
         const file = bucket.file(fileName);
         const stream = file.createWriteStream({
           resumable: false,
@@ -167,7 +168,7 @@ export const updateRepairShop = async (req, res) => {
         });
         stream.on("finish", async () => {
           try {
-            // Update repair shop dengan data dan path gambar yang baru
+            // Update the repair shop with the new data and image path
             await repairShop.update({
               ...req.body,
               image: fileName,
@@ -183,7 +184,7 @@ export const updateRepairShop = async (req, res) => {
         });
         stream.end(imageFile.buffer);
       } else {
-        // Jika tidak ada gambar yang diupload, hanya update data repair shop
+        // If no image is uploaded, only update the repair shop data
         await repairShop.update(req.body);
         res.status(200).json({ message: "Repair shop updated successfully" });
       }
@@ -194,10 +195,10 @@ export const updateRepairShop = async (req, res) => {
   }
 };
 
-// Menghapus repair shop
+// Delete repair shop
 export const deleteRepairShop = async (req, res) => {
   try {
-    // Memeriksa peran (role) pengguna
+    // Check user's role
     if (req.role !== "admin") {
       return res.status(403).json({ error: "Unauthorized" });
     }
@@ -207,7 +208,7 @@ export const deleteRepairShop = async (req, res) => {
       return res.status(404).json({ error: "Repair shop not found" });
     }
 
-    // Hapus file gambar dari GCS
+    // Delete the image file from GCS
     const fileName = repairShop.image;
     if (fileName) {
       const file = bucket.file(fileName);

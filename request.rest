@@ -65,7 +65,7 @@ Content-Type: application/json
 
 ###
 // Get Me
-GET http://localhost:5000/
+GET http://localhost:5000/me
 ###
 //LogOut User
 DELETE http://localhost:5000/logout
@@ -91,18 +91,14 @@ Content-Type: application/json
 ###
 // Create Repair Shop
 POST http://localhost:5000/repairshops
-Content-Type: application/json
+Content-Type: multipart/form-data
 
-{
-"name": "Repair Shop 2",
-"email": "ardivan@gmail.com",
-"password": "123456",
-"address": "Jakarta Selatan",
-"phone_number": "081123456789",
-"latitude": 123.456,
-"longitude": 789.012,
-"userId": 6
-}
+image=@/path/to/your/image.jpg
+name=Example Repair Shop
+address=123 Main Street
+phone_number=1234567890
+latitude=10.123456
+longitude=20.654321
 
 
 ###
